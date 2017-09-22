@@ -20,7 +20,6 @@ public class AmbuPlannerController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Collection<Position>> getAllPositions() {
-		System.out.println(App.avaiablePositionsAround(new Coordinate(0,0)));
 		return new ResponseEntity<>(App.getPositions(), HttpStatus.OK);
 	}
 
@@ -28,6 +27,7 @@ public class AmbuPlannerController {
 	public ResponseEntity initPositions() {
 		App.initPositions();
 		App.printMap();
+		System.out.println(App.avaiablePositionsAround(new Coordinate(3,3)).size());
 		return new ResponseEntity<>("iniciado", HttpStatus.OK);
 	}
 
