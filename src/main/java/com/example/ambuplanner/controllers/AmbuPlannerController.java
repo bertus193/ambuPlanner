@@ -1,6 +1,7 @@
 package com.example.ambuplanner.controllers;
 
 import com.example.ambuplanner.model.App;
+import com.example.ambuplanner.model.Coordinate;
 import com.example.ambuplanner.model.Position;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,7 +20,15 @@ public class AmbuPlannerController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Collection<Position>> getAllPositions() {
+		System.out.println(App.avaiablePositionsAround(new Coordinate(0,0)));
 		return new ResponseEntity<>(App.getPositions(), HttpStatus.OK);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/init")
+	public ResponseEntity initPositions() {
+		App.initPositions();
+		App.printMap();
+		return new ResponseEntity<>("iniciado", HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/home")
