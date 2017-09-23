@@ -3,6 +3,7 @@ package com.example.ambuplanner.model;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -204,6 +205,32 @@ public class Map<T extends AbstractNode> {
         }
 
         return ambulances;
+    }
+
+    /**
+     * @return position of ambulance near
+     */
+    public AbstractNode getNearestAmbulance(int posx, int posy) {
+        AbstractNode out = new Node(-1, -1, "null");
+        int pathSize;
+        int actualMax = App.getMaps().get(mapPosition).getNodes().size();
+
+        List<T> ambulances = this.getAmbulances();
+        HashMap<T, Integer> ambulanceDistances = new HashMap<T, Integer>();
+        for (T ambulance : ambulances) {
+            pathSize = this.findPath(posx, posy, ambulance.getNodePosition().getX(),
+                    ambulance.getNodePosition().getY()).size();
+            ambulanceDistances.put(ambulance, pathSize);
+        }
+
+        for (HashMap.Entry<T, Integer> entry : ambulanceDistances.entrySet()) {
+            if (entry.getValue() < actualMax) {
+                out = (AbstractNode) entry;
+                actualMax = entry.getValue();
+            }
+        }
+
+        return out;
     }
 
 }

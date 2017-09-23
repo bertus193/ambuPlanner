@@ -8,7 +8,7 @@ import java.util.List;
 
 public class App {
 
-    private static List<MapInstance> maps = new ArrayList<>();
+    private static List<AppMap> maps = new ArrayList<>();
     private static List<Notification> notifications = new ArrayList<>();
 
     private App(List<Notification> notifications) {
@@ -28,7 +28,7 @@ public class App {
         return notifications;
     }
 
-    public static List<MapInstance> getMaps() {
+    public static List<AppMap> getMaps() {
         return maps;
     }
 
@@ -69,10 +69,16 @@ public class App {
             e.printStackTrace();
         }
 
-        MapInstance initMap = new MapInstance(initNodes);
+        AppMap initMap = new AppMap(initNodes);
         App.createApp(initNotifications);
         App.getMaps().add(initMap);
 
+    }
+
+    public static int generateNewMap() {
+        int startPosition = App.getMaps().size() - 1;
+        App.getMaps().add(new AppMap(App.getMaps().get(startPosition).getNodes()));
+        return App.getMaps().size() - 1;
     }
 
 

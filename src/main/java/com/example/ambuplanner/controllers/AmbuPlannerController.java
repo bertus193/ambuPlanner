@@ -2,6 +2,7 @@ package com.example.ambuplanner.controllers;
 
 import com.example.ambuplanner.model.AbstractNode;
 import com.example.ambuplanner.model.App;
+import com.example.ambuplanner.model.AppLaunch;
 import com.example.ambuplanner.model.Map;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,7 +21,8 @@ public class AmbuPlannerController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity index() {
-
+        AppLaunch initApp = new AppLaunch();
+        initApp.launch();
         return new ResponseEntity<>("started", HttpStatus.OK);
     }
 
