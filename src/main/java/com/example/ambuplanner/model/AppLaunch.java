@@ -9,17 +9,15 @@ public class AppLaunch {
     public void launch() {
         for (Notification notification : App.getNotifications()) {
             int mapPosition = App.generateNewMap();
+            //Node node = App.getMaps().get(mapPosition).
         }
-        
+
         this.printMaps();
     }
 
     public void printMaps() {
-        Map<AbstractNode> myMap;
-        for (int i = 0; i < App.getMaps().size(); i++) {
-            myMap = new Map<>(i);
-            myMap.printMap();
-
+        for (AppMap map : App.getMaps()) {
+            map.printMap();
             System.out.println("##################");
         }
     }

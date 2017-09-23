@@ -1,9 +1,8 @@
 package com.example.ambuplanner.controllers;
 
-import com.example.ambuplanner.model.AbstractNode;
 import com.example.ambuplanner.model.App;
 import com.example.ambuplanner.model.AppLaunch;
-import com.example.ambuplanner.model.Map;
+import com.example.ambuplanner.model.Node;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
@@ -28,10 +27,8 @@ public class AmbuPlannerController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/init")
     public ResponseEntity initPositions() {
-        Map<AbstractNode> myMap = new Map<>(0);
-        myMap.printMap();
 
-        List<AbstractNode> path = myMap.findPath(0, 0, 5, 3);
+        List<Node> path = App.getMaps().get(0).findPath(0, 0, 5, 3);
 
         System.out.println(path.size() + " " + path);
 

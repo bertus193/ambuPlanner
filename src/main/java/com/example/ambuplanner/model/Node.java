@@ -8,8 +8,8 @@ public class Node extends AbstractNode {
     }
 
     public void sethCosts(AbstractNode endNode) {
-        this.sethCosts((absolute(this.getNodePosition().getX() - endNode.getNodePosition().getX())
-                + absolute(this.getNodePosition().getY() - endNode.getNodePosition().getY()))
+        this.sethCosts((absolute(this.getCoordValue().getX() - endNode.getCoordValue().getX())
+                + absolute(this.getCoordValue().getY() - endNode.getCoordValue().getY()))
                 * BASICMOVEMENTCOST);
     }
 

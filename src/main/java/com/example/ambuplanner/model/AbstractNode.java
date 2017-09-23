@@ -5,7 +5,7 @@ public abstract class AbstractNode {
 
     protected static final int BASICMOVEMENTCOST = 1;
 
-    private NodePosition nodePosition;
+    private CoordValue coordValue;
 
     /**
      * the previous AbstractNode of this one on the currently calculated path.
@@ -25,15 +25,15 @@ public abstract class AbstractNode {
     /**
      * constructs a walkable AbstractNode with given coordinates.
      *
-     * @param xPosition nodePosition x
-     * @param yPosition nodePosition y
+     * @param xPosition coordValue x
+     * @param yPosition coordValue y
      */
     public AbstractNode(int xPosition, int yPosition, String value) {
-        this.nodePosition = new NodePosition(xPosition, yPosition, value);
+        this.coordValue = new CoordValue(xPosition, yPosition, value);
     }
 
-    public NodePosition getNodePosition() {
-        return nodePosition;
+    public CoordValue getCoordValue() {
+        return coordValue;
     }
 
     /**
@@ -167,7 +167,7 @@ public abstract class AbstractNode {
      */
     @Override
     public String toString() {
-        return "(" + getNodePosition().getX() + ", " + getNodePosition().getY() + " V: " + getNodePosition().getValue() + ")";
+        return "(" + getCoordValue().getX() + ", " + getCoordValue().getY() + " V: " + getCoordValue().getValue() + ")";
         //: h: "+ gethCosts() + " g: " + getgCosts() + " f: " + getfCosts();
     }
 
@@ -186,10 +186,10 @@ public abstract class AbstractNode {
             return false;
         }
         final AbstractNode other = (AbstractNode) obj;
-        if (this.getNodePosition().getX() != other.getNodePosition().getX()) {
+        if (this.getCoordValue().getX() != other.getCoordValue().getX()) {
             return false;
         }
-        if (this.getNodePosition().getY() != other.getNodePosition().getY()) {
+        if (this.getCoordValue().getY() != other.getCoordValue().getY()) {
             return false;
         }
         return true;
@@ -203,8 +203,8 @@ public abstract class AbstractNode {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 17 * hash + this.getNodePosition().getX();
-        hash = 17 * hash + this.getNodePosition().getY();
+        hash = 17 * hash + this.getCoordValue().getX();
+        hash = 17 * hash + this.getCoordValue().getY();
         return hash;
     }
 

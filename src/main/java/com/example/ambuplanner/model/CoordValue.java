@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class NodePosition {
+public class CoordValue {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,13 +16,13 @@ public class NodePosition {
     private int y;
     private String value;
 
-    public NodePosition(int x, int y, String value) {
+    public CoordValue(int x, int y, String value) {
         this.x = x;
         this.y = y;
         this.value = value;
     }
 
-    public NodePosition() {
+    public CoordValue() {
     }
 
     public int getX() {

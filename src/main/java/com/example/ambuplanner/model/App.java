@@ -62,22 +62,23 @@ public class App {
             JSONArray array = new JSONArray(notificationsJSON);
             for (int countPosition = 0; countPosition < array.length(); countPosition++) {
                 jsonPosition = array.getJSONArray(countPosition);
-                NodePosition pos = new NodePosition((Integer) jsonPosition.get(1), (Integer) jsonPosition.get(2), "P");
+                CoordValue pos = new CoordValue((Integer) jsonPosition.get(1), (Integer) jsonPosition.get(2), "P");
                 initNotifications.add(new Notification((Integer) jsonPosition.get(0), pos));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        AppMap initMap = new AppMap(initNodes);
+        AppMap initMap = new AppMap(initNodes, 0);
         App.createApp(initNotifications);
         App.getMaps().add(initMap);
 
     }
 
     public static int generateNewMap() {
-        int startPosition = App.getMaps().size() - 1;
-        App.getMaps().add(new AppMap(App.getMaps().get(startPosition).getNodes()));
+        int startSize = App.getMaps().size() - 1;
+        int endSize = startSize + 1;
+        App.getMaps().add(new AppMap(App.getMaps().get(startSize).getNodes(), endSize));
         return App.getMaps().size() - 1;
     }
 
