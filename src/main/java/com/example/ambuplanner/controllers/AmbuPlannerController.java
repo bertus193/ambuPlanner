@@ -33,10 +33,7 @@ public class AmbuPlannerController {
 
         System.out.println(path.size() + " " + path);
 
-		/*for (int i = 0; i < path.size(); i++) {
-            System.out.print("(" + path.get(i).getxPosition() + ", " + path.get(i).getyPosition() + ") -> ");
-		}*/
-        return new ResponseEntity<>("iniciado", HttpStatus.OK);
+        return new ResponseEntity<>("started", HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/home")

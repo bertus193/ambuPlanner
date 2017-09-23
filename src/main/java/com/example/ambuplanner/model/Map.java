@@ -9,7 +9,7 @@ import java.util.List;
 public class Map<T extends AbstractNode> {
 
     public Map() {
-        App.initNodePositions();
+        App.initApp();
     }
 
     // list containing nodes not visited but adjacent to visited nodes.
