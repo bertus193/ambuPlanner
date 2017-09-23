@@ -26,9 +26,8 @@ public class AmbuPlannerController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/init")
     public ResponseEntity initPositions() {
-        App.initNodePositions();
-        App.printMap();
         Map<AbstractNode> myMap = new Map<>();
+        myMap.printMap();
 
         List<AbstractNode> path = myMap.findPath(0, 0, 5, 3);
 

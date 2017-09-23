@@ -1,11 +1,15 @@
 package com.example.ambuplanner.model;
 
+import org.apache.commons.lang.StringUtils;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Map<T extends AbstractNode> {
 
     public Map() {
+        App.initNodePositions();
     }
 
     // list containing nodes not visited but adjacent to visited nodes.
@@ -33,7 +37,7 @@ public class Map<T extends AbstractNode> {
     public final List<T> findPath(int oldX, int oldY, int newX, int newY) {
         openList = new LinkedList<>();
         closedList = new LinkedList<>();
-        openList.add((T) App.getNodePosition(oldX, oldY)); // add starting node to open list
+        openList.add((T) this.getNodePosition(oldX, oldY)); // add starting node to open list
 
         T current;
         while (true) {
@@ -44,7 +48,7 @@ public class Map<T extends AbstractNode> {
             //System.out.println("(" + current.getNodePosition().getX() + " " + current.getNodePosition().getY() + ") (" + newX + " " + newY + ")");
 
             if ((current.getNodePosition().getX() == newX) && (current.getNodePosition().getY() == newY)) { // found goal
-                return calcPath((T) App.getNodePosition(oldX, oldY), current);
+                return calcPath((T) this.getNodePosition(oldX, oldY), current);
             }
 
             // for all adjacent nodes:
@@ -52,7 +56,7 @@ public class Map<T extends AbstractNode> {
             for (T currentAdj : neighbors) {
                 if (!openList.contains(currentAdj)) { // node is not in openList
                     currentAdj.setPrevious(current); // set current node as previous for this node
-                    currentAdj.sethCosts(App.getNodePosition(newX, newY)); // set h costs of this node (estimated costs to goal)
+                    currentAdj.sethCosts(this.getNodePosition(newX, newY)); // set h costs of this node (estimated costs to goal)
                     currentAdj.setgCosts(current); // set g costs of this node (costs from start to this node)
                     openList.add(currentAdj); // add node to openList
                 } else { // node is in openList
@@ -120,34 +124,84 @@ public class Map<T extends AbstractNode> {
 
         T temp;
         if (posx > 0) {
-            temp = (T) App.getNodePosition(posx - 1, posy);
+            temp = (T) this.getNodePosition(posx - 1, posy);
             if (temp != null && temp.getNodePosition().getValue().equals("null") && !closedList.contains(temp)) {
                 neighbors.add(temp);
             }
         }
 
         if (posx < Math.sqrt(App.getNodes().size())) {
-            temp = (T) App.getNodePosition(posx + 1, posy);
+            temp = (T) this.getNodePosition(posx + 1, posy);
             if (temp != null && temp.getNodePosition().getValue().equals("null") && !closedList.contains(temp)) {
                 neighbors.add(temp);
             }
         }
 
         if (posy > 0) {
-            temp = (T) App.getNodePosition(posx, posy - 1);
+            temp = (T) this.getNodePosition(posx, posy - 1);
             if (temp != null && temp.getNodePosition().getValue().equals("null") && !closedList.contains(temp)) {
                 neighbors.add(temp);
             }
         }
 
         if (posy < Math.sqrt(App.getNodes().size())) {
-            temp = (T) App.getNodePosition(posx, posy + 1);
+            temp = (T) this.getNodePosition(posx, posy + 1);
             if (temp != null && temp.getNodePosition().getValue().equals("null") && !closedList.contains(temp)) {
                 neighbors.add(temp);
             }
         }
 
         return neighbors;
+    }
+
+    public AbstractNode getNodePosition(int x, int y) {
+        for (AbstractNode actualNode : App.getNodes()) {
+            if (x == actualNode.getNodePosition().getX() && y == actualNode.getNodePosition().getY()) {
+                return actualNode;
+            }
+        }
+        return null;
+    }
+
+    public static void printMap() {
+        StringBuilder out = new StringBuilder();
+        for (int i = 0; i < App.getNodes().size(); i++) {
+            if (App.getNodes().get(i).getNodePosition().getY() == 0) {
+                out.append("\n");
+            }
+            String value = App.getNodes().get(i).getNodePosition().getValue();
+            if (value == "null") {
+                out.append(" ");
+            } else {
+                out.append(value);
+            }
+            out.append(" ");
+        }
+        System.out.println(out);
+    }
+
+    public List<T> getAmbulances() {
+        List<T> ambulances = new ArrayList<>();
+
+        for (AbstractNode node : App.getNodes()) {
+            if (StringUtils.isNumeric(node.getNodePosition().getValue())) {
+                ambulances.add((T) node);
+            }
+        }
+
+        return ambulances;
+    }
+
+    public List<T> getHospitals() {
+        List<T> ambulances = new ArrayList<>();
+
+        for (AbstractNode node : App.getNodes()) {
+            if (node.getNodePosition().getValue().equals("H")) {
+                ambulances.add((T) node);
+            }
+        }
+
+        return ambulances;
     }
 
 }

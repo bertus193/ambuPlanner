@@ -30,14 +30,6 @@ public class App {
         throw new CloneNotSupportedException();
     }
 
-    public static AbstractNode getNodePosition(int x, int y) {
-        for (AbstractNode actualNode : App.getNodes()) {
-            if (x == actualNode.getNodePosition().getX() && y == actualNode.getNodePosition().getY()) {
-                return actualNode;
-            }
-        }
-        return null;
-    }
 
     public static void initNodePositions() {
         String map = "[[1, null, null, null, null, null, null, null, null, 4], [null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null], [null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null], [null, null, null, null, null, null, null, null, null, null], [null, \"B\", \"H\", 2, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null], [null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null, \"H\", \"B\", null], [null, null, null, null, null, null, null, 3, null, null], [null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null], [null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"H\", null, \"B\", \"B\", null],[5, null, null, null, null, null, null, 6, null, null]]";
@@ -61,20 +53,4 @@ public class App {
     }
 
 
-    public static void printMap() {
-        String out = "";
-        for (int i = 0; i < App.getNodes().size(); i++) {
-            if (App.getNodes().get(i).getNodePosition().getY() == 0) {
-                out += "\n";
-            }
-            String value = App.getNodes().get(i).getNodePosition().getValue();
-            if (value == "null") {
-                out += " ";
-            } else {
-                out += value;
-            }
-            out += " ";
-        }
-        System.out.println(out);
-    }
 }
