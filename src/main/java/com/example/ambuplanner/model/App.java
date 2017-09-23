@@ -8,8 +8,6 @@ import java.util.List;
 
 public class App {
 
-    //private static List<Position> positions = new ArrayList<>();
-
     private static List<AbstractNode> nodes = new ArrayList<>();
 
     private App(List<AbstractNode> nodes) {
@@ -34,8 +32,7 @@ public class App {
 
     public static AbstractNode getNodePosition(int x, int y) {
         for (AbstractNode actualNode : App.getNodes()) {
-            if (x == actualNode.getxPosition() && y == actualNode.getyPosition()) {
-                System.out.println(actualNode);
+            if (x == actualNode.getNodePosition().getX() && y == actualNode.getNodePosition().getY()) {
                 return actualNode;
             }
         }
@@ -52,7 +49,7 @@ public class App {
             for (int countPosition = 0; countPosition < array.length(); countPosition++) {
                 jsonPosition = array.getJSONArray(countPosition);
                 for (int y = 0; y < jsonPosition.length(); y++) {
-                    initNodes.add(new MyNode(x, y, jsonPosition.get(y).toString()));
+                    initNodes.add(new Node(x, y, jsonPosition.get(y).toString()));
                 }
                 x++;
             }
@@ -67,10 +64,10 @@ public class App {
     public static void printMap() {
         String out = "";
         for (int i = 0; i < App.getNodes().size(); i++) {
-            if (App.getNodes().get(i).getxPosition() == 0) {
+            if (App.getNodes().get(i).getNodePosition().getY() == 0) {
                 out += "\n";
             }
-            String value = App.getNodes().get(i).getValue();
+            String value = App.getNodes().get(i).getNodePosition().getValue();
             if (value == "null") {
                 out += " ";
             } else {

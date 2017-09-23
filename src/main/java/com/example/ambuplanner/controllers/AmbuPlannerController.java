@@ -3,7 +3,6 @@ package com.example.ambuplanner.controllers;
 import com.example.ambuplanner.model.AbstractNode;
 import com.example.ambuplanner.model.App;
 import com.example.ambuplanner.model.Map;
-import com.example.ambuplanner.model.MyNodeFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
@@ -29,7 +28,7 @@ public class AmbuPlannerController {
     public ResponseEntity initPositions() {
         App.initNodePositions();
         App.printMap();
-        Map<AbstractNode> myMap = new Map<>(10, 10, new MyNodeFactory());
+        Map<AbstractNode> myMap = new Map<>();
 
         List<AbstractNode> path = myMap.findPath(0, 0, 5, 3);
 

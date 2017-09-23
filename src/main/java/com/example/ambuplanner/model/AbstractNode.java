@@ -2,37 +2,15 @@ package com.example.ambuplanner.model;
 
 public abstract class AbstractNode {
 
-    /**
-     * costs to move sideways from one square to another.
-     */
+
     protected static final int BASICMOVEMENTCOST = 1;
 
-    private int xPosition;
-    private int yPosition;
-    private String value;
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-
-    // for pathfinding:
+    private NodePosition nodePosition;
 
     /**
      * the previous AbstractNode of this one on the currently calculated path.
      */
     private AbstractNode previous;
-
-    /**
-     * optional extra penalty.
-     */
-    private int movementPanelty;
-
-    //private int fCosts; // g + h costs
 
     /**
      * calculated costs from start AbstractNode to this AbstractNode.
@@ -47,40 +25,15 @@ public abstract class AbstractNode {
     /**
      * constructs a walkable AbstractNode with given coordinates.
      *
-     * @param xPosition
-     * @param yPosition
+     * @param xPosition nodePosition x
+     * @param yPosition nodePosition y
      */
     public AbstractNode(int xPosition, int yPosition, String value) {
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-        this.value = value;
-        this.movementPanelty = 0;
+        this.nodePosition = new NodePosition(xPosition, yPosition, value);
     }
 
-
-    /**
-     * sets x and y coordinates.
-     *
-     * @param x
-     * @param y
-     */
-    public void setCoordinates(int x, int y) {
-        this.xPosition = x;
-        this.yPosition = y;
-    }
-
-    /**
-     * @return the xPosition
-     */
-    public int getxPosition() {
-        return xPosition;
-    }
-
-    /**
-     * @return the yPosition
-     */
-    public int getyPosition() {
-        return yPosition;
+    public NodePosition getNodePosition() {
+        return nodePosition;
     }
 
     /**
@@ -100,17 +53,7 @@ public abstract class AbstractNode {
     }
 
     /**
-     * sets a general penalty for the movement on this node.
-     *
-     * @param movementPanelty the movementPanelty to set
-     */
-    public void setMovementPanelty(int movementPanelty) {
-        this.movementPanelty = movementPanelty;
-    }
-
-    /**
      * returns <code>gCosts</code> + <code>hCosts</code>.
-     * <p>
      *
      * @return the fCosts
      */
@@ -134,7 +77,7 @@ public abstract class AbstractNode {
      * @param gCosts the gCosts to set
      */
     private void setgCosts(int gCosts) {
-        this.gCosts = gCosts + movementPanelty;
+        this.gCosts = gCosts;
     }
 
     /**
@@ -176,8 +119,7 @@ public abstract class AbstractNode {
      * @return gCosts
      */
     public int calculategCosts(AbstractNode previousAbstractNode) {
-        return (previousAbstractNode.getgCosts()
-                + BASICMOVEMENTCOST + movementPanelty);
+        return (previousAbstractNode.getgCosts() + BASICMOVEMENTCOST);
     }
 
     /**
@@ -188,7 +130,7 @@ public abstract class AbstractNode {
      * @return gCosts
      */
     public int calculategCosts(AbstractNode previousAbstractNode, int movementCost) {
-        return (previousAbstractNode.getgCosts() + movementCost + movementPanelty);
+        return (previousAbstractNode.getgCosts() + movementCost);
     }
 
     /**
@@ -217,14 +159,6 @@ public abstract class AbstractNode {
      */
     public abstract void sethCosts(AbstractNode endAbstractNode);
 
-
-    /*
-     * @return the movementPanelty
-     */
-    private int getMovementPanelty() {
-        return movementPanelty;
-    }
-
     /**
      * returns a String containing the coordinates, as well as h, f and g
      * costs.
@@ -233,7 +167,7 @@ public abstract class AbstractNode {
      */
     @Override
     public String toString() {
-        return "(" + getxPosition() + ", " + getyPosition() + " V: " + getValue() + ")";
+        return "(" + getNodePosition().getX() + ", " + getNodePosition().getY() + " V: " + getNodePosition().getValue() + ")";
         //: h: "+ gethCosts() + " g: " + getgCosts() + " f: " + getfCosts();
     }
 
@@ -252,10 +186,10 @@ public abstract class AbstractNode {
             return false;
         }
         final AbstractNode other = (AbstractNode) obj;
-        if (this.xPosition != other.xPosition) {
+        if (this.getNodePosition().getX() != other.getNodePosition().getX()) {
             return false;
         }
-        if (this.yPosition != other.yPosition) {
+        if (this.getNodePosition().getY() != other.getNodePosition().getY()) {
             return false;
         }
         return true;
@@ -269,8 +203,8 @@ public abstract class AbstractNode {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 17 * hash + this.xPosition;
-        hash = 17 * hash + this.yPosition;
+        hash = 17 * hash + this.getNodePosition().getX();
+        hash = 17 * hash + this.getNodePosition().getY();
         return hash;
     }
 

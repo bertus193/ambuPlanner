@@ -6,28 +6,39 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Position {
+public class NodePosition {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private Coordinate coord;
+    private int x;
+    private int y;
     private String value;
 
-    public Position(Coordinate coord, String value) {
-        this.coord = coord;
+    public NodePosition(int x, int y, String value) {
+        this.x = x;
+        this.y = y;
         this.value = value;
     }
 
-    public Position() {}
-
-    public Coordinate getCoord() {
-        return coord;
+    public NodePosition() {
     }
 
-    public void setCoord(Coordinate coord) {
-        this.coord = coord;
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     public String getValue() {
@@ -40,9 +51,9 @@ public class Position {
 
     @Override
     public String toString() {
-        if(value == "null"){
+        if (value == "null") {
             return " ";
-        } else{
+        } else {
             return value;
         }
     }
