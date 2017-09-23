@@ -22,7 +22,7 @@ public class App {
         if (App.getNodes().isEmpty()) {
             new App(positions);
         } else {
-            System.err.println("Ya se ha instalaciado la app");
+            System.out.println("Ya se ha instalaciado la app");
         }
     }
 
