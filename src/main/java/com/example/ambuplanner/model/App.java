@@ -8,24 +8,28 @@ import java.util.List;
 
 public class App {
 
-    private static List<AbstractNode> nodes = new ArrayList<>();
+    private static List<MapInstance> maps = new ArrayList<>();
     private static List<Notification> notifications = new ArrayList<>();
 
-    private App(List<AbstractNode> nodes, List<Notification> notifications) {
-        App.nodes = nodes;
+    private App(List<Notification> notifications) {
         App.notifications = notifications;
     }
 
-    public static List<AbstractNode> getNodes() {
-        return App.nodes;
-    }
 
-    public static void createApp(List<AbstractNode> positions, List<Notification> notifications) {
-        if (App.getNodes().isEmpty()) {
-            new App(positions, notifications);
+    public static void createApp(List<Notification> notifications) {
+        if (App.getNotifications().isEmpty()) {
+            new App(notifications);
         } else {
             System.out.println("Ya se ha instalaciado la app");
         }
+    }
+
+    public static List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public static List<MapInstance> getMaps() {
+        return maps;
     }
 
     public App clone() throws CloneNotSupportedException {
@@ -65,8 +69,10 @@ public class App {
             e.printStackTrace();
         }
 
+        MapInstance initMap = new MapInstance(initNodes);
+        App.createApp(initNotifications);
+        App.getMaps().add(initMap);
 
-        App.createApp(initNodes, initNotifications);
     }
 
 

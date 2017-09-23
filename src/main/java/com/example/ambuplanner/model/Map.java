@@ -8,8 +8,10 @@ import java.util.List;
 
 public class Map<T extends AbstractNode> {
 
-    public Map() {
-        App.initApp();
+    private int mapPosition;
+
+    public Map(int position) {
+        this.mapPosition = position;
     }
 
     // list containing nodes not visited but adjacent to visited nodes.
@@ -130,7 +132,7 @@ public class Map<T extends AbstractNode> {
             }
         }
 
-        if (posx < Math.sqrt(App.getNodes().size())) {
+        if (posx < Math.sqrt(App.getMaps().get(mapPosition).getNodes().size())) {
             temp = (T) this.getNodePosition(posx + 1, posy);
             if (temp != null && temp.getNodePosition().getValue().equals("null") && !closedList.contains(temp)) {
                 neighbors.add(temp);
@@ -144,7 +146,7 @@ public class Map<T extends AbstractNode> {
             }
         }
 
-        if (posy < Math.sqrt(App.getNodes().size())) {
+        if (posy < Math.sqrt(App.getMaps().get(mapPosition).getNodes().size())) {
             temp = (T) this.getNodePosition(posx, posy + 1);
             if (temp != null && temp.getNodePosition().getValue().equals("null") && !closedList.contains(temp)) {
                 neighbors.add(temp);
@@ -155,7 +157,7 @@ public class Map<T extends AbstractNode> {
     }
 
     public AbstractNode getNodePosition(int x, int y) {
-        for (AbstractNode actualNode : App.getNodes()) {
+        for (AbstractNode actualNode : App.getMaps().get(mapPosition).getNodes()) {
             if (x == actualNode.getNodePosition().getX() && y == actualNode.getNodePosition().getY()) {
                 return actualNode;
             }
@@ -163,13 +165,13 @@ public class Map<T extends AbstractNode> {
         return null;
     }
 
-    public static void printMap() {
+    public void printMap() {
         StringBuilder out = new StringBuilder();
-        for (int i = 0; i < App.getNodes().size(); i++) {
-            if (App.getNodes().get(i).getNodePosition().getY() == 0) {
+        for (int i = 0; i < App.getMaps().get(mapPosition).getNodes().size(); i++) {
+            if (App.getMaps().get(mapPosition).getNodes().get(i).getNodePosition().getY() == 0) {
                 out.append("\n");
             }
-            String value = App.getNodes().get(i).getNodePosition().getValue();
+            String value = App.getMaps().get(mapPosition).getNodes().get(i).getNodePosition().getValue();
             if (value == "null") {
                 out.append(" ");
             } else {
@@ -183,7 +185,7 @@ public class Map<T extends AbstractNode> {
     public List<T> getAmbulances() {
         List<T> ambulances = new ArrayList<>();
 
-        for (AbstractNode node : App.getNodes()) {
+        for (AbstractNode node : App.getMaps().get(mapPosition).getNodes()) {
             if (StringUtils.isNumeric(node.getNodePosition().getValue())) {
                 ambulances.add((T) node);
             }
@@ -195,7 +197,7 @@ public class Map<T extends AbstractNode> {
     public List<T> getHospitals() {
         List<T> ambulances = new ArrayList<>();
 
-        for (AbstractNode node : App.getNodes()) {
+        for (AbstractNode node : App.getMaps().get(mapPosition).getNodes()) {
             if (node.getNodePosition().getValue().equals("H")) {
                 ambulances.add((T) node);
             }

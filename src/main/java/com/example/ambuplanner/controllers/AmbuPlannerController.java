@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
 import java.util.List;
 
 @SpringBootApplication
@@ -20,13 +19,14 @@ import java.util.List;
 public class AmbuPlannerController {
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Collection<AbstractNode>> getAllPositions() {
-        return new ResponseEntity<>(App.getNodes(), HttpStatus.OK);
+    public ResponseEntity index() {
+
+        return new ResponseEntity<>("started", HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/init")
     public ResponseEntity initPositions() {
-        Map<AbstractNode> myMap = new Map<>();
+        Map<AbstractNode> myMap = new Map<>(0);
         myMap.printMap();
 
         List<AbstractNode> path = myMap.findPath(0, 0, 5, 3);
@@ -37,11 +37,12 @@ public class AmbuPlannerController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/home")
-    public ResponseEntity index() {
+    public ResponseEntity home() {
         return new ResponseEntity<>("Greetings from Spring Boot!", HttpStatus.OK);
     }
 
     public static void main(String[] args) {
+        App.initApp();
         SpringApplication.run(AmbuPlannerController.class, args);
     }
 }
