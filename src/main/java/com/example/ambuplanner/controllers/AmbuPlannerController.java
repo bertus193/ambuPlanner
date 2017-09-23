@@ -27,7 +27,6 @@ public class AmbuPlannerController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/init")
     public ResponseEntity initPositions() {
-
         List<Node> path = App.getMaps().get(0).findPath(0, 0, 5, 3);
 
         System.out.println(path.size() + " " + path);
@@ -42,6 +41,8 @@ public class AmbuPlannerController {
 
     public static void main(String[] args) {
         App.initApp();
+        AppLaunch initApp = new AppLaunch(); //TODO
+        initApp.launch();
         SpringApplication.run(AmbuPlannerController.class, args);
     }
 }

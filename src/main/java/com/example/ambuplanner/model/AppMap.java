@@ -2,7 +2,10 @@ package com.example.ambuplanner.model;
 
 import org.apache.commons.lang.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
 public class AppMap {
 
@@ -49,7 +52,7 @@ public class AppMap {
     public List<Node> findPath(int startX, int startY, int endX, int endY) {
         openList = new LinkedList<>();
         closedList = new LinkedList<>();
-        openList.add((Node) this.getNodePosition(startX, startY)); // add starting node to open list
+        openList.add((Node) this.getNodeByCoord(startX, startY)); // add starting node to open list
 
         CoordValue endCoord = new CoordValue(endX, endY, "");
 
@@ -62,7 +65,7 @@ public class AppMap {
             //System.out.println("(" + current.getCoordValue().getX() + " " + current.getCoordValue().getY() + ") (" + endX + " " + endY + ")");
 
             if (current.getCoordValue().equals(endCoord)) { // found goal
-                return calcPath((Node) this.getNodePosition(startX, startY), current);
+                return calcPath((Node) this.getNodeByCoord(startX, startY), current);
             }
 
             // for all adjacent nodes:
@@ -70,7 +73,7 @@ public class AppMap {
             for (Node currentAdj : neighbors) {
                 if (!openList.contains(currentAdj)) { // node is not in openList
                     currentAdj.setPrevious(current); // set current node as previous for this node
-                    currentAdj.sethCosts(this.getNodePosition(endX, endY)); // set h costs of this node (estimated costs to goal)
+                    currentAdj.sethCosts(this.getNodeByCoord(endX, endY)); // set h costs of this node (estimated costs to goal)
                     currentAdj.setgCosts(current); // set g costs of this node (costs from start to this node)
                     openList.add(currentAdj); // add node to openList
                 } else { // node is in openList
@@ -139,28 +142,28 @@ public class AppMap {
 
         Node temp;
         if (posx > 0) {
-            temp = (Node) this.getNodePosition(posx - 1, posy);
+            temp = (Node) this.getNodeByCoord(posx - 1, posy);
             if (temp != null && temp.getCoordValue().equals(endPosition) || (temp != null && temp.getCoordValue().getValue().equals("null") && !closedList.contains(temp))) {
                 neighbors.add(temp);
             }
         }
 
         if (posx < Math.sqrt(App.getMaps().get(mapPosition).getNodes().size())) {
-            temp = (Node) this.getNodePosition(posx + 1, posy);
+            temp = (Node) this.getNodeByCoord(posx + 1, posy);
             if (temp != null && temp.getCoordValue().equals(endPosition) || (temp != null && temp.getCoordValue().getValue().equals("null") && !closedList.contains(temp))) {
                 neighbors.add(temp);
             }
         }
 
         if (posy > 0) {
-            temp = (Node) this.getNodePosition(posx, posy - 1);
+            temp = (Node) this.getNodeByCoord(posx, posy - 1);
             if (temp != null && temp.getCoordValue().equals(endPosition) || (temp != null && temp.getCoordValue().getValue().equals("null") && !closedList.contains(temp))) {
                 neighbors.add(temp);
             }
         }
 
         if (posy < Math.sqrt(App.getMaps().get(mapPosition).getNodes().size())) {
-            temp = (Node) this.getNodePosition(posx, posy + 1);
+            temp = (Node) this.getNodeByCoord(posx, posy + 1);
             if (temp != null && temp.getCoordValue().equals(endPosition) || (temp != null && temp.getCoordValue().getValue().equals("null") && !closedList.contains(temp))) {
                 neighbors.add(temp);
             }
@@ -169,13 +172,23 @@ public class AppMap {
         return neighbors;
     }
 
-    public AbstractNode getNodePosition(int x, int y) {
+    public AbstractNode getNodeByCoord(int x, int y) {
         for (AbstractNode actualNode : this.getNodes()) {
             if (x == actualNode.getCoordValue().getX() && y == actualNode.getCoordValue().getY()) {
                 return actualNode;
             }
         }
         return null;
+    }
+
+    public int getNodePositionByCoord(int x, int y) {
+        int out = -1;
+        for (int i = 0; i < getNodes().size(); i++) {
+            if (x == getNodes().get(i).getCoordValue().getX() && y == getNodes().get(i).getCoordValue().getY()) {
+                out = i;
+            }
+        }
+        return out;
     }
 
     public void printMap() {
@@ -222,22 +235,25 @@ public class AppMap {
     /**
      * @return position of ambulance near
      */
-    public AbstractNode getNearestAmbulance(int posx, int posy) {
-        AbstractNode out = new Node(-1, -1, "null");
-        int pathSize;
+    public Ambulance getNearestAmbulance(int posx, int posy) {
+        Ambulance out = null;
+        List<Node> routePath;
         int actualMax = App.getMaps().get(mapPosition).getNodes().size();
 
+        Node patientNode = new Node(posx, posy, "P");
+
         List<Node> ambulances = this.getAmbulances();
-        HashMap<Node, Integer> ambulanceDistances = new HashMap<>();
+        List<Ambulance> movements = new ArrayList<>();
         for (Node ambulance : ambulances) {
-            pathSize = findPath(ambulance.getCoordValue().getX(), ambulance.getCoordValue().getY(), posx, posy).size();
-            ambulanceDistances.put(ambulance, pathSize);
+            routePath = findPath(ambulance.getCoordValue().getX(), ambulance.getCoordValue().getY(),
+                    patientNode.getCoordValue().getX(), patientNode.getCoordValue().getY());
+            movements.add(new Ambulance(routePath, ambulance, patientNode));
         }
 
-        for (HashMap.Entry<Node, Integer> entry : ambulanceDistances.entrySet()) {
-            if (entry.getValue() < actualMax) {
-                out = entry.getKey();
-                actualMax = entry.getValue();
+        for (Ambulance mov : movements) {
+            if (mov.getPathRoute().size() < actualMax) {
+                out = mov;
+                actualMax = mov.getPathRoute().size();
             }
         }
 
