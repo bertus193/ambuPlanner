@@ -4,9 +4,9 @@ public class Notification {
 
     private int orderNumber;
 
-    private CoordValue patientPosition;
+    private AbstractNode patientPosition;
 
-    public Notification(int orderNumber, CoordValue patientPosition) {
+    public Notification(int orderNumber, AbstractNode patientPosition) {
         this.orderNumber = orderNumber;
         this.patientPosition = patientPosition;
     }
@@ -19,11 +19,11 @@ public class Notification {
         this.orderNumber = orderNumber;
     }
 
-    public CoordValue getPatientPosition() {
+    public AbstractNode getPatientPosition() {
         return patientPosition;
     }
 
-    public void setPatientPosition(CoordValue patientPosition) {
+    public void setPatientPosition(AbstractNode patientPosition) {
         this.patientPosition = patientPosition;
     }
 }

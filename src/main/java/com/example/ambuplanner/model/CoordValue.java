@@ -57,4 +57,12 @@ public class CoordValue {
             return value;
         }
     }
+
+    public boolean equals(CoordValue coord) {
+        if (this.getX() == coord.getX() && this.getY() == coord.getY()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

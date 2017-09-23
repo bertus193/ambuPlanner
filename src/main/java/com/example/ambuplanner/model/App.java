@@ -16,6 +16,11 @@ public class App {
     }
 
 
+    /**
+     * createApp Create a global application with singleton
+     *
+     * @param notifications notifications provided by client
+     */
     public static void createApp(List<Notification> notifications) {
         if (App.getNotifications().isEmpty()) {
             new App(notifications);
@@ -31,6 +36,7 @@ public class App {
     public static List<AppMap> getMaps() {
         return maps;
     }
+
 
     public App clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException();
@@ -62,8 +68,8 @@ public class App {
             JSONArray array = new JSONArray(notificationsJSON);
             for (int countPosition = 0; countPosition < array.length(); countPosition++) {
                 jsonPosition = array.getJSONArray(countPosition);
-                CoordValue pos = new CoordValue((Integer) jsonPosition.get(1), (Integer) jsonPosition.get(2), "P");
-                initNotifications.add(new Notification((Integer) jsonPosition.get(0), pos));
+                Node node = new Node((Integer) jsonPosition.get(1), (Integer) jsonPosition.get(2), "P");
+                initNotifications.add(new Notification((Integer) jsonPosition.get(0), node));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -75,6 +81,11 @@ public class App {
 
     }
 
+    /**
+     * Each iteration is necesary a new Map, this method generate them.
+     *
+     * @return int, position of this map in array.
+     */
     public static int generateNewMap() {
         int startSize = App.getMaps().size() - 1;
         int endSize = startSize + 1;

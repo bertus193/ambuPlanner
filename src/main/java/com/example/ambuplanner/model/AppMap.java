@@ -39,17 +39,19 @@ public class AppMap {
      * beginning followed by the calculated shortest allowed path ending
      * with the end node.
      *
-     * @param oldX start X
-     * @param oldY start Y
-     * @param newX end X
-     * @param newY end Y
+     * @param startX start X
+     * @param startY start Y
+     * @param endX   end X
+     * @param endY   end Y
      * @return List path list
      */
     @SuppressWarnings("unchecked")
-    public final List<Node> findPath(int oldX, int oldY, int newX, int newY) {
+    public List<Node> findPath(int startX, int startY, int endX, int endY) {
         openList = new LinkedList<>();
         closedList = new LinkedList<>();
-        openList.add((Node) this.getNodePosition(oldX, oldY)); // add starting node to open list
+        openList.add((Node) this.getNodePosition(startX, startY)); // add starting node to open list
+
+        CoordValue endCoord = new CoordValue(endX, endY, "");
 
         Node current;
         while (true) {
@@ -57,18 +59,18 @@ public class AppMap {
             closedList.add(current); // add current node to closed list
             openList.remove(current); // delete current node from open list
 
-            //System.out.println("(" + current.getCoordValue().getX() + " " + current.getCoordValue().getY() + ") (" + newX + " " + newY + ")");
+            //System.out.println("(" + current.getCoordValue().getX() + " " + current.getCoordValue().getY() + ") (" + endX + " " + endY + ")");
 
-            if ((current.getCoordValue().getX() == newX) && (current.getCoordValue().getY() == newY)) { // found goal
-                return calcPath((Node) this.getNodePosition(oldX, oldY), current);
+            if (current.getCoordValue().equals(endCoord)) { // found goal
+                return calcPath((Node) this.getNodePosition(startX, startY), current);
             }
 
             // for all adjacent nodes:
-            List<Node> neighbors = getNeighbors(current.getCoordValue().getX(), current.getCoordValue().getY());
+            List<Node> neighbors = getNeighbors(current.getCoordValue().getX(), current.getCoordValue().getY(), endCoord);
             for (Node currentAdj : neighbors) {
                 if (!openList.contains(currentAdj)) { // node is not in openList
                     currentAdj.setPrevious(current); // set current node as previous for this node
-                    currentAdj.sethCosts(this.getNodePosition(newX, newY)); // set h costs of this node (estimated costs to goal)
+                    currentAdj.sethCosts(this.getNodePosition(endX, endY)); // set h costs of this node (estimated costs to goal)
                     currentAdj.setgCosts(current); // set g costs of this node (costs from start to this node)
                     openList.add(currentAdj); // add node to openList
                 } else { // node is in openList
@@ -131,34 +133,35 @@ public class AppMap {
      * if those exist, are walkable and are not already in the closedList!
      */
     @SuppressWarnings("unchecked")
-    private List<Node> getNeighbors(int posx, int posy) {
+    private List<Node> getNeighbors(int posx, int posy, CoordValue endPosition) {
+        CoordValue startPosition = new CoordValue(posx, posy, "");
         List<Node> neighbors = new LinkedList<>();
 
         Node temp;
         if (posx > 0) {
             temp = (Node) this.getNodePosition(posx - 1, posy);
-            if (temp != null && temp.getCoordValue().getValue().equals("null") && !closedList.contains(temp)) {
+            if (temp != null && temp.getCoordValue().equals(endPosition) || (temp != null && temp.getCoordValue().getValue().equals("null") && !closedList.contains(temp))) {
                 neighbors.add(temp);
             }
         }
 
         if (posx < Math.sqrt(App.getMaps().get(mapPosition).getNodes().size())) {
             temp = (Node) this.getNodePosition(posx + 1, posy);
-            if (temp != null && temp.getCoordValue().getValue().equals("null") && !closedList.contains(temp)) {
+            if (temp != null && temp.getCoordValue().equals(endPosition) || (temp != null && temp.getCoordValue().getValue().equals("null") && !closedList.contains(temp))) {
                 neighbors.add(temp);
             }
         }
 
         if (posy > 0) {
             temp = (Node) this.getNodePosition(posx, posy - 1);
-            if (temp != null && temp.getCoordValue().getValue().equals("null") && !closedList.contains(temp)) {
+            if (temp != null && temp.getCoordValue().equals(endPosition) || (temp != null && temp.getCoordValue().getValue().equals("null") && !closedList.contains(temp))) {
                 neighbors.add(temp);
             }
         }
 
         if (posy < Math.sqrt(App.getMaps().get(mapPosition).getNodes().size())) {
             temp = (Node) this.getNodePosition(posx, posy + 1);
-            if (temp != null && temp.getCoordValue().getValue().equals("null") && !closedList.contains(temp)) {
+            if (temp != null && temp.getCoordValue().equals(endPosition) || (temp != null && temp.getCoordValue().getValue().equals("null") && !closedList.contains(temp))) {
                 neighbors.add(temp);
             }
         }
@@ -205,15 +208,15 @@ public class AppMap {
     }
 
     public List<Node> getHospitals() {
-        List<Node> ambulances = new ArrayList<>();
+        List<Node> hospitals = new ArrayList<>();
 
         for (AbstractNode node : getNodes()) {
             if (node.getCoordValue().getValue().equals("H")) {
-                ambulances.add((Node) node);
+                hospitals.add((Node) node);
             }
         }
 
-        return ambulances;
+        return hospitals;
     }
 
     /**
@@ -227,14 +230,13 @@ public class AppMap {
         List<Node> ambulances = this.getAmbulances();
         HashMap<Node, Integer> ambulanceDistances = new HashMap<>();
         for (Node ambulance : ambulances) {
-            pathSize = this.findPath(posx, posy, ambulance.getCoordValue().getX(),
-                    ambulance.getCoordValue().getY()).size();
+            pathSize = findPath(ambulance.getCoordValue().getX(), ambulance.getCoordValue().getY(), posx, posy).size();
             ambulanceDistances.put(ambulance, pathSize);
         }
 
         for (HashMap.Entry<Node, Integer> entry : ambulanceDistances.entrySet()) {
             if (entry.getValue() < actualMax) {
-                out = (AbstractNode) entry;
+                out = entry.getKey();
                 actualMax = entry.getValue();
             }
         }
