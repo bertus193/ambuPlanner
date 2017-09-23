@@ -26,6 +26,7 @@ public class AppLaunch extends TimerTask {
         CoordValue oldCoordPosition, newCoordPosition, destCoordPosition;
         List<Node> newPathRoute;
         int oldIntPosition, newIntPosition;
+        String firstMapValue;
 
         List<Ambulance> ambulancesReady = new ArrayList<>();
 
@@ -50,7 +51,6 @@ public class AppLaunch extends TimerTask {
             }
             if (newPatientFound == false) {
 
-
                 for (int i = 0; i < ambulancesReady.size(); i++) {
 
                     Ambulance ambulance = ambulancesReady.get(i);
@@ -73,14 +73,22 @@ public class AppLaunch extends TimerTask {
                         //Recalculate route
                         if (!oldCoordPosition.equals(newCoordPosition)) {
                             currentMap.getNodes().get(newIntPosition).getCoordValue().setValue(oldCoordPosition.getValue());
-                            currentMap.getNodes().get(oldIntPosition).getCoordValue().setValue("null");
+
+                            firstMapValue = App.getMaps().get(0).getNodes().get(oldIntPosition).getCoordValue().getValue();
+                            if (firstMapValue.equals("H") || firstMapValue.equals("B")) {
+                                currentMap.getNodes().get(oldIntPosition).getCoordValue().setValue(firstMapValue);
+                            } else {
+                                currentMap.getNodes().get(oldIntPosition).getCoordValue().setValue("null");
+                            }
+
 
                             if (!newCoordPosition.equals(destCoordPosition)) {
                                 newPathRoute = currentMap.findPath(newCoordPosition.getX(), newCoordPosition.getY(), destCoordPosition.getX(), destCoordPosition.getY());
                                 ambulance.setPathRoute(newPathRoute);
+                            } else {
+                                ambulancesReady.remove(i);
                             }
-                            System.out.println("Route: " + ambulance.getPathRoute());
-                            ambulance.getPathRoute().remove(0);
+
                         }
                     } else {
                         ambulancesReady.remove(i);
@@ -96,7 +104,7 @@ public class AppLaunch extends TimerTask {
             App.getMaps().get(mapPosition).printMap();
             turn++;
 
-            if (totalNotifications == App.getNotifications().size()) {
+            if (totalNotifications >= App.getNotifications().size() && ambulancesReady.isEmpty()) {
                 isEnd = true;
             }
         }
