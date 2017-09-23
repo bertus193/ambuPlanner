@@ -1,8 +1,9 @@
 package com.example.ambuplanner.controllers;
 
+import com.example.ambuplanner.model.AbstractNode;
 import com.example.ambuplanner.model.App;
-import com.example.ambuplanner.model.Coordinate;
-import com.example.ambuplanner.model.Position;
+import com.example.ambuplanner.model.Map;
+import com.example.ambuplanner.model.MyNodeFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
@@ -12,31 +13,40 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.List;
 
 @SpringBootApplication
 @RestController
 @RequestMapping("")
 public class AmbuPlannerController {
 
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<Collection<Position>> getAllPositions() {
-		return new ResponseEntity<>(App.getPositions(), HttpStatus.OK);
-	}
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<Collection<AbstractNode>> getAllPositions() {
+        return new ResponseEntity<>(App.getNodes(), HttpStatus.OK);
+    }
 
-	@RequestMapping(method = RequestMethod.GET, value = "/init")
-	public ResponseEntity initPositions() {
-		App.initPositions();
-		App.printMap();
-		System.out.println(App.avaiablePositionsAround(new Coordinate(3,3)).size());
-		return new ResponseEntity<>("iniciado", HttpStatus.OK);
-	}
+    @RequestMapping(method = RequestMethod.GET, value = "/init")
+    public ResponseEntity initPositions() {
+        App.initNodePositions();
+        App.printMap();
+        Map<AbstractNode> myMap = new Map<>(10, 10, new MyNodeFactory());
 
-	@RequestMapping(method = RequestMethod.GET, value = "/home")
-	public ResponseEntity index() {
-		return new ResponseEntity<>("Greetings from Spring Boot!",HttpStatus.OK);
-	}
+        List<AbstractNode> path = myMap.findPath(0, 0, 5, 3);
 
-	public static void main(String[] args) {
-		SpringApplication.run(AmbuPlannerController.class, args);
-	}
+        System.out.println(path.size() + " " + path);
+
+		/*for (int i = 0; i < path.size(); i++) {
+            System.out.print("(" + path.get(i).getxPosition() + ", " + path.get(i).getyPosition() + ") -> ");
+		}*/
+        return new ResponseEntity<>("iniciado", HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/home")
+    public ResponseEntity index() {
+        return new ResponseEntity<>("Greetings from Spring Boot!", HttpStatus.OK);
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(AmbuPlannerController.class, args);
+    }
 }
