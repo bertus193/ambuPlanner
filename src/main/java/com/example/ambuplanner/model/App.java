@@ -43,7 +43,7 @@ public class App {
     }
 
     public static int calculateSize(JSONArray array) {
-        int count = 0;
+        int count;
         int out = 0;
         JSONArray jsonPosition;
         try {
@@ -59,6 +59,7 @@ public class App {
                 }
             }
         } catch (JSONException e) {
+            e.printStackTrace();
         }
         return out;
     }
@@ -138,7 +139,7 @@ public class App {
 
     public static String mapsToJson() {
         Gson gson = new Gson();
-        String out = "";
+        String out;
         out = gson.toJson(App.getMaps());
         return out;
     }

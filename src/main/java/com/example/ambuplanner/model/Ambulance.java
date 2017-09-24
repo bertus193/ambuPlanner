@@ -4,15 +4,15 @@ import java.util.List;
 
 public class Ambulance {
 
-    private List<Node> pathRoute;
+    private List<AbstractNode> pathRoute;
 
-    private Node destinationNode;
+    private AbstractNode destinationNode;
 
-    private Node startNode;
+    private AbstractNode startNode;
 
-    private Node currentPosition;
+    private AbstractNode currentPosition;
 
-    private Node initAmbulancePosition;
+    private AbstractNode initAmbulancePosition;
 
     private boolean backRoute = false;
 
@@ -20,7 +20,7 @@ public class Ambulance {
 
     private int identifier;
 
-    public Ambulance(List<Node> pathRoute, Node startNode, Node destinationNode) {
+    public Ambulance(List<AbstractNode> pathRoute, AbstractNode startNode, AbstractNode destinationNode) {
         this.pathRoute = pathRoute;
         if (this.destinationNode == null) {
             this.destinationNode = destinationNode;
@@ -33,31 +33,27 @@ public class Ambulance {
 
     }
 
-    public List<Node> getPathRoute() {
+    public List<AbstractNode> getPathRoute() {
         return pathRoute;
     }
 
-    public void setPathRoute(List<Node> pathRoute) {
+    public void setPathRoute(List<AbstractNode> pathRoute) {
         this.pathRoute = pathRoute;
     }
 
-    public Node getDestinationNode() {
+    public AbstractNode getDestinationNode() {
         return destinationNode;
     }
-
-    public void setDestinationNode(Node destinationNode) {
-        this.destinationNode = destinationNode;
-    }
-
-    public Node getStartNode() {
+    
+    public AbstractNode getStartNode() {
         return startNode;
     }
 
-    public Node getCurrentPosition() {
+    public AbstractNode getCurrentPosition() {
         return currentPosition;
     }
 
-    public void setCurrentPosition(Node currentPosition) {
+    public void setCurrentPosition(AbstractNode currentPosition) {
         this.currentPosition = currentPosition;
     }
 
@@ -85,7 +81,7 @@ public class Ambulance {
         this.identifier = identifier;
     }
 
-    public Node getInitAmbulancePosition() {
+    public AbstractNode getInitAmbulancePosition() {
         return initAmbulancePosition;
     }
 

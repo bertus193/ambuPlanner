@@ -15,15 +15,8 @@ public class Notification {
         return orderNumber;
     }
 
-    public void setOrderNumber(int orderNumber) {
-        this.orderNumber = orderNumber;
-    }
-
     public AbstractNode getPatientPosition() {
         return patientPosition;
     }
-
-    public void setPatientPosition(AbstractNode patientPosition) {
-        this.patientPosition = patientPosition;
-    }
+    
 }

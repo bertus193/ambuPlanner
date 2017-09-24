@@ -27,7 +27,7 @@ public class AppLaunch extends TimerTask {
 
         //patient position
         CoordValue oldCoordPosition, newCoordPosition, destCoordPosition, mapOldCoordPosition, newDestinationPlaceCoordPosition;
-        List<Node> newPathRoute;
+        List<AbstractNode> newPathRoute;
         int oldIntPosition, newIntPosition;
         String firstMapValue;
 
@@ -58,7 +58,7 @@ public class AppLaunch extends TimerTask {
                 for (int i = 0; i < ambulancesReady.size(); i++) {
                     Ambulance ambulance = ambulancesReady.get(i);
                     if (ambulance != null && !ambulance.getPathRoute().isEmpty()) {
-                        Node newPosition = ambulance.getPathRoute().get(0);
+                        Node newPosition = (Node) ambulance.getPathRoute().get(0);
 
                         oldCoordPosition = ambulance.getCurrentPosition().getCoordValue();
                         newCoordPosition = newPosition.getCoordValue();
@@ -98,7 +98,7 @@ public class AppLaunch extends TimerTask {
                                     if (hospitalAmbulance != null) {
                                         hospitalAmbulance.setHospitalRoute(true);
                                         hospitalAmbulance.setIdentifier(ambulanceId);
-                                        hospitalAmbulance.setInitAmbulancePosition(ambulance.getStartNode());
+                                        hospitalAmbulance.setInitAmbulancePosition((Node) ambulance.getStartNode());
                                         ambulancesReady.add(hospitalAmbulance);
                                         System.out.println("New Ambulance Hospital: " + hospitalAmbulance.getPathRoute());
                                         ambulanceId++;
@@ -111,12 +111,10 @@ public class AppLaunch extends TimerTask {
                                     newPathRoute = currentMap.findPath(newCoordPosition.getX(), newCoordPosition.getY(), newDestinationPlaceCoordPosition.getX(), newDestinationPlaceCoordPosition.getY());
                                     Ambulance backAmbulance = new Ambulance(newPathRoute, ambulance.getCurrentPosition(), ambulance.getInitAmbulancePosition());
 
-                                    if (backAmbulance != null) {
-                                        backAmbulance.setBackRoute(true);
-                                        backAmbulance.setIdentifier(ambulance.getIdentifier());
-                                        ambulancesReady.add(backAmbulance);
-                                        System.out.println("New Ambulance Back: " + backAmbulance.getPathRoute());
-                                    }
+                                    backAmbulance.setBackRoute(true);
+                                    backAmbulance.setIdentifier(ambulance.getIdentifier());
+                                    ambulancesReady.add(backAmbulance);
+                                    System.out.println("New Ambulance Back: " + backAmbulance.getPathRoute());
 
                                 }
                                 ambulancesReady.remove(i);
@@ -137,19 +135,6 @@ public class AppLaunch extends TimerTask {
                 isEnd = true;
             }
         }
-    }
-
-    public void changeAmbulanceWaiting(int id) {
-        Ambulance aux, ambulance = null;
-        for (int i = 0; i < ambulancesBackWaiting.size(); i++) {
-            aux = ambulancesBackWaiting.get(i);
-            if (aux.getIdentifier() == id) {
-                ambulancesBackWaiting.remove(i);
-                ambulance = aux;
-            }
-        }
-
-        ambulancesReady.add(ambulance);
     }
 
 }
