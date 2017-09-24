@@ -1,19 +1,25 @@
-<div *ngFor="let actualMap of jsonMaps">
-      <div id="chessboard">
-            <div *ngFor="let actualNode of actualMap.nodes">
-                  <ng-container *ngIf="(actualNode.coordValue.value == 'B' || actualNode.coordValue.value == 'H')">
-                        <span id="box" style="background-color:#6B6B6B">{{actualNode.coordValue.value}}</span>
-                  </ng-container>
-                  <ng-container *ngIf="actualNode.coordValue.value == 'P'">
-                        <span id="box" style="background-color:#ECE93E">{{actualNode.coordValue.value}}</span>
-                  </ng-container>
-                  <ng-container *ngIf="isNumeric(actualNode.coordValue.value)">
-                        <span id="box" style="background-color:#E45F5F">{{actualNode.coordValue.value}}</span>
-                  </ng-container>
-                  <ng-container *ngIf="actualNode.coordValue.value == 'null'">
-                        <span id="box">{{actualNode.coordValue.value}}</span>
-                  </ng-container>
-            </div>
+<div align="center">
+      <div class="page-header">
+            <h1>My Ambulance Planner</h1>
       </div>
-      <br><br><br>
+      <div *ngFor="let actualMap of jsonMaps">
+            <div id="chessboard">
+                  <div *ngFor="let actualNode of actualMap.nodes">
+                        <ng-container *ngIf="(actualNode.coordValue.value == 'B' || actualNode.coordValue.value == 'H')">
+                              <span id="box" style="background-color:#6B6B6B">{{actualNode.coordValue.value}}</span>
+                        </ng-container>
+                        <ng-container *ngIf="actualNode.coordValue.value == 'P'">
+                              <span id="box" style="background-color:#ECE93E">{{actualNode.coordValue.value}}</span>
+                        </ng-container>
+                        <ng-container *ngIf="isNumeric(actualNode.coordValue.value)">
+                              <span id="box" style="background-color:#E45F5F">{{actualNode.coordValue.value}}</span>
+                        </ng-container>
+                        <ng-container *ngIf="actualNode.coordValue.value == 'null'">
+                              <span id="box"></span>
+                        </ng-container>
+                  </div>
+            </div>
+            <br><br><br>
+      </div>
+
 </div>
