@@ -235,7 +235,7 @@ public class AppMap {
     /**
      * @return position of ambulance near
      */
-    public DestinationPlace getNearestPlace(int posx, int posy, List<Node> places) {
+    public DestinationPlace getNearestAmbulance(int posx, int posy) {
         DestinationPlace out = null;
         List<Node> routePath;
         int actualMax = App.getMaps().get(mapPosition).getNodes().size();
@@ -243,7 +243,7 @@ public class AppMap {
         Node patientNode = new Node(posx, posy, "P");
 
         List<DestinationPlace> movements = new ArrayList<>();
-        for (Node ambulance : places) {
+        for (Node ambulance : getAmbulances()) {
             routePath = findPath(ambulance.getCoordValue().getX(), ambulance.getCoordValue().getY(),
                     patientNode.getCoordValue().getX(), patientNode.getCoordValue().getY());
             movements.add(new DestinationPlace(routePath, ambulance, patientNode));
@@ -259,4 +259,32 @@ public class AppMap {
         return out;
     }
 
+
+    /**
+     * @return position of hospital near
+     */
+    public DestinationPlace getNearestHospital(int posx, int posy) {
+        DestinationPlace out = null;
+        List<Node> routePath;
+        int actualMax = App.getMaps().get(mapPosition).getNodes().size();
+
+        Node ambulanceNode = new Node(posx, posy, "P");
+
+        List<Node> hospitals = this.getHospitals();
+        List<DestinationPlace> movements = new ArrayList<>();
+        for (Node hospital : hospitals) {
+            routePath = findPath(ambulanceNode.getCoordValue().getX(), ambulanceNode.getCoordValue().getY(),
+                    hospital.getCoordValue().getX(), hospital.getCoordValue().getY());
+            movements.add(new DestinationPlace(routePath, ambulanceNode, hospital));
+        }
+
+        for (DestinationPlace mov : movements) {
+            if (mov.getPathRoute().size() < actualMax) {
+                out = mov;
+                actualMax = mov.getPathRoute().size();
+            }
+        }
+
+        return out;
+    }
 }
