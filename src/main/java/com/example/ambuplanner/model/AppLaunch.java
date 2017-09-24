@@ -18,6 +18,7 @@ public class AppLaunch extends TimerTask {
     }
 
     public void launch() {
+        App.initApp();
         int turn = 0; // to infinite, wait totalNotifications
         boolean isEnd = false;
         int totalNotifications = 0; //count notification to finish turns
@@ -96,12 +97,13 @@ public class AppLaunch extends TimerTask {
 
                                     Ambulance hospitalAmbulance = currentMap.getNearestHospital(newDestinationPlaceCoordPosition.getX(), newDestinationPlaceCoordPosition.getY());
 
-                                    hospitalAmbulance.setHospitalRoute(true);
-                                    hospitalAmbulance.setIdentifier(ambulanceId);
-                                    ambulancesReady.add(hospitalAmbulance);
-                                    ambulanceId++;
-
-                                    System.out.println("New Ambulance Hospital: " + hospitalAmbulance.getPathRoute());
+                                    if (hospitalAmbulance != null) {
+                                        hospitalAmbulance.setHospitalRoute(true);
+                                        hospitalAmbulance.setIdentifier(ambulanceId);
+                                        ambulancesReady.add(hospitalAmbulance);
+                                        System.out.println("New Ambulance Hospital: " + hospitalAmbulance.getPathRoute());
+                                        ambulanceId++;
+                                    }
 
 
                                 } else if (ambulance.isHospitalRoute()) {

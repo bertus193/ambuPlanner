@@ -42,7 +42,6 @@ public class AmbuPlannerController {
     }
 
     public static void main(String[] args) {
-        App.initApp();
         SpringApplication.run(AmbuPlannerController.class, args);
     }
 }

@@ -12,7 +12,8 @@ public class App {
     private static List<AppMap> maps = new ArrayList<>();
     private static List<Notification> notifications = new ArrayList<>();
 
-    private App(List<Notification> notifications) {
+    private App(List<AppMap> maps, List<Notification> notifications) {
+        App.maps = maps;
         App.notifications = notifications;
     }
 
@@ -22,12 +23,8 @@ public class App {
      *
      * @param notifications notifications provided by client
      */
-    public static void createApp(List<Notification> notifications) {
-        if (App.getNotifications().isEmpty()) {
-            new App(notifications);
-        } else {
-            System.out.println("Ya se ha instalaciado la app");
-        }
+    public static void createApp(List<AppMap> maps, List<Notification> notifications) {
+        new App(maps, notifications);
     }
 
     public static List<Notification> getNotifications() {
@@ -43,6 +40,27 @@ public class App {
         throw new CloneNotSupportedException();
     }
 
+    public static int calculateSize(JSONArray array) {
+        int count = 0;
+        int out = 0;
+        JSONArray jsonPosition;
+        try {
+
+            for (int countPosition = 0; countPosition < array.length(); countPosition++) {
+                jsonPosition = array.getJSONArray(countPosition);
+                count = 0;
+                for (int y = 0; y < jsonPosition.length(); y++) {
+                    count++;
+                }
+                if (out < count) {
+                    out = count;
+                }
+            }
+        } catch (JSONException e) {
+        }
+        return out;
+    }
+
 
     public static void initApp() {
         String mapJSON = "[[1, null, null, null, null, null, null, null, null, 4], [null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null], [null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null], [null, null, null, null, null, null, null, null, null, null], [null, \"B\", \"H\", 2, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null], [null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null, \"H\", \"B\", null], [null, null, null, null, null, null, null, 3, null, null], [null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null], [null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"H\", null, \"B\", \"B\", null],[5, null, null, null, null, null, null, 6, null, null]]";
@@ -53,10 +71,16 @@ public class App {
         int x = 0;
         try {
             JSONArray array = new JSONArray(mapJSON);
+            int size = calculateSize(array);
             for (int countPosition = 0; countPosition < array.length(); countPosition++) {
                 jsonPosition = array.getJSONArray(countPosition);
-                for (int y = 0; y < jsonPosition.length(); y++) {
-                    initNodes.add(new Node(x, y, jsonPosition.get(y).toString()));
+                for (int y = 0; y < size; y++) {
+                    if (y >= jsonPosition.length()) {
+                        initNodes.add(new Node(x, y, "null"));
+                    } else {
+                        initNodes.add(new Node(x, y, jsonPosition.get(y).toString()));
+                    }
+
                 }
                 x++;
             }
@@ -76,9 +100,12 @@ public class App {
             e.printStackTrace();
         }
 
+
         AppMap initMap = new AppMap(initNodes, 0);
-        App.createApp(initNotifications);
-        App.getMaps().add(initMap);
+        List<AppMap> mapList = new ArrayList<>();
+        mapList.add(initMap);
+
+        App.createApp(mapList, initNotifications);
 
     }
 
@@ -110,7 +137,7 @@ public class App {
     public static String mapsToJson() {
         Gson gson = new Gson();
         String out = "";
-        out = gson.toJson(maps);
+        out = gson.toJson(App.getMaps());
         return out;
     }
 
