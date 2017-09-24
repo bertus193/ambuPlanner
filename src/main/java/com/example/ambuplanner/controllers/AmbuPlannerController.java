@@ -22,7 +22,7 @@ public class AmbuPlannerController {
     public ResponseEntity index() {
         AppLaunch initApp = new AppLaunch();
         initApp.launch();
-        return new ResponseEntity<>("started", HttpStatus.OK);
+        return new ResponseEntity<>(App.mapsToJson(), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/init")
@@ -41,8 +41,6 @@ public class AmbuPlannerController {
 
     public static void main(String[] args) {
         App.initApp();
-        AppLaunch initApp = new AppLaunch(); //TODO
-        initApp.launch();
         SpringApplication.run(AmbuPlannerController.class, args);
     }
 }

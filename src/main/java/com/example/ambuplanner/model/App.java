@@ -1,5 +1,6 @@
 package com.example.ambuplanner.model;
 
+import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -91,6 +92,7 @@ public class App {
         int endSize = startSize + 1;
         List<AbstractNode> nodes = App.copyValuesFromAppMap(App.getMaps().get(startSize));
         App.getMaps().add(new AppMap(nodes, endSize));
+        System.out.println("MAPS SIZE: " + (App.getMaps().size() - 1));
         return App.getMaps().size() - 1;
     }
 
@@ -102,6 +104,13 @@ public class App {
             out.add(node2);
         }
 
+        return out;
+    }
+
+    public static String mapsToJson() {
+        Gson gson = new Gson();
+        String out = "";
+        out = gson.toJson(maps);
         return out;
     }
 

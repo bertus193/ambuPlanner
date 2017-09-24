@@ -35,7 +35,6 @@ public class AppLaunch extends TimerTask {
         int ambulanceId = 0;
 
         while (!isEnd) {
-            System.out.println("TOTAL AMBULANCES: " + ambulancesReady.size());
             int mapPosition = App.generateNewMap();
             AppMap currentMap = App.getMaps().get(mapPosition);
 
