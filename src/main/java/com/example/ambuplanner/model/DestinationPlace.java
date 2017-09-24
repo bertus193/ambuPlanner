@@ -2,7 +2,7 @@ package com.example.ambuplanner.model;
 
 import java.util.List;
 
-public class Ambulance {
+public class DestinationPlace {
 
     private List<Node> pathRoute;
 
@@ -14,7 +14,9 @@ public class Ambulance {
 
     private boolean backRoute = false;
 
-    public Ambulance(List<Node> pathRoute, Node startNode, Node destinationNode) {
+    private boolean hospitalRoute = false;
+
+    public DestinationPlace(List<Node> pathRoute, Node startNode, Node destinationNode) {
         this.pathRoute = pathRoute;
         if (this.destinationNode == null) {
             this.destinationNode = destinationNode;
@@ -61,5 +63,13 @@ public class Ambulance {
 
     public void setBackRoute(boolean backRoute) {
         this.backRoute = backRoute;
+    }
+
+    public boolean isHospitalRoute() {
+        return hospitalRoute;
+    }
+
+    public void setHospitalRoute(boolean hospitalRoute) {
+        this.hospitalRoute = hospitalRoute;
     }
 }

@@ -235,22 +235,21 @@ public class AppMap {
     /**
      * @return position of ambulance near
      */
-    public Ambulance getNearestAmbulance(int posx, int posy) {
-        Ambulance out = null;
+    public DestinationPlace getNearestPlace(int posx, int posy, List<Node> places) {
+        DestinationPlace out = null;
         List<Node> routePath;
         int actualMax = App.getMaps().get(mapPosition).getNodes().size();
 
         Node patientNode = new Node(posx, posy, "P");
 
-        List<Node> ambulances = this.getAmbulances();
-        List<Ambulance> movements = new ArrayList<>();
-        for (Node ambulance : ambulances) {
+        List<DestinationPlace> movements = new ArrayList<>();
+        for (Node ambulance : places) {
             routePath = findPath(ambulance.getCoordValue().getX(), ambulance.getCoordValue().getY(),
                     patientNode.getCoordValue().getX(), patientNode.getCoordValue().getY());
-            movements.add(new Ambulance(routePath, ambulance, patientNode));
+            movements.add(new DestinationPlace(routePath, ambulance, patientNode));
         }
 
-        for (Ambulance mov : movements) {
+        for (DestinationPlace mov : movements) {
             if (mov.getPathRoute().size() < actualMax) {
                 out = mov;
                 actualMax = mov.getPathRoute().size();
@@ -259,4 +258,5 @@ public class AppMap {
 
         return out;
     }
+
 }
