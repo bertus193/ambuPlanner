@@ -12,6 +12,8 @@ public class Ambulance {
 
     private Node currentPosition;
 
+    private Node initAmbulancePosition;
+
     private boolean backRoute = false;
 
     private boolean hospitalRoute = false;
@@ -81,5 +83,13 @@ public class Ambulance {
 
     public void setIdentifier(int identifier) {
         this.identifier = identifier;
+    }
+
+    public Node getInitAmbulancePosition() {
+        return initAmbulancePosition;
+    }
+
+    public void setInitAmbulancePosition(Node initAmbulancePosition) {
+        this.initAmbulancePosition = initAmbulancePosition;
     }
 }
