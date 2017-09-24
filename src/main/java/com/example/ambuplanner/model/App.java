@@ -89,8 +89,21 @@ public class App {
     public static int generateNewMap() {
         int startSize = App.getMaps().size() - 1;
         int endSize = startSize + 1;
-        App.getMaps().add(new AppMap(App.getMaps().get(startSize).getNodes(), endSize));
+        List<AbstractNode> nodes = App.copyValuesFromAppMap(App.getMaps().get(startSize));
+        App.getMaps().add(new AppMap(nodes, endSize));
+        System.out.println("NEW MAP " + (App.getMaps().size() - 1) + " FROM MAP " + startSize);
         return App.getMaps().size() - 1;
+    }
+
+    public static List<AbstractNode> copyValuesFromAppMap(AppMap mapForCopy) {
+        List<AbstractNode> out = new ArrayList<>();
+
+        for (AbstractNode node : mapForCopy.getNodes()) {
+            AbstractNode node2 = new Node(node.getCoordValue().getX(), node.getCoordValue().getY(), node.getCoordValue().getValue());
+            out.add(node2);
+        }
+
+        return out;
     }
 
 

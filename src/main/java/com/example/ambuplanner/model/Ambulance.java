@@ -12,6 +12,8 @@ public class Ambulance {
 
     private Node currentPosition;
 
+    private boolean backRoute = false;
+
     public Ambulance(List<Node> pathRoute, Node startNode, Node destinationNode) {
         this.pathRoute = pathRoute;
         if (this.destinationNode == null) {
@@ -21,6 +23,8 @@ public class Ambulance {
             this.startNode = startNode;
         }
         this.currentPosition = startNode;
+
+
     }
 
     public List<Node> getPathRoute() {
@@ -49,5 +53,13 @@ public class Ambulance {
 
     public void setCurrentPosition(Node currentPosition) {
         this.currentPosition = currentPosition;
+    }
+
+    public boolean isBackRoute() {
+        return backRoute;
+    }
+
+    public void setBackRoute(boolean backRoute) {
+        this.backRoute = backRoute;
     }
 }
