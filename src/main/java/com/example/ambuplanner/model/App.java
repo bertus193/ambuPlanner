@@ -108,6 +108,9 @@ public class App {
         List<AppMap> mapList = new ArrayList<>();
         mapList.add(initMap);
 
+        App.getMaps().clear();
+        App.getNotifications().clear();
+
         App.createApp(mapList, initNotifications);
 
     }

@@ -19,7 +19,7 @@ public class AppMap {
     public List<AbstractNode> getNodes() {
         return this.nodes;
     }
-    
+
     private int mapPosition;
 
 
@@ -168,10 +168,10 @@ public class AppMap {
     }
 
     public int countLenght() {
-        int out = (int) Math.sqrt(this.getNodes().size());
-        for (int i = 1; i <= this.getNodes().size(); i++) {
+        int out = this.getNodes().size();
+        for (int i = 0; i < this.getNodes().size(); i++) {
             if (this.getNodes().get(i).getCoordValue().getX() == 1 && this.getNodes().get(i).getCoordValue().getY() == 0) {
-                return i;
+                return i + 1;
             }
         }
         return out;

@@ -3,7 +3,7 @@
             <h1>My Ambulance Planner</h1>
       </div>
       <div *ngFor="let actualMap of jsonMaps">
-            <div id="chessboard">
+            <div id="chessboard" [style.width.px]="width" [style.height.px]="height">
                   <div *ngFor="let actualNode of actualMap.nodes">
                         <ng-container *ngIf="(actualNode.coordValue.value == 'B' || actualNode.coordValue.value == 'H')">
                               <span id="box" style="background-color:#6B6B6B">{{actualNode.coordValue.value}}</span>
