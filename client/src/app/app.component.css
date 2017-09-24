@@ -1,0 +1,21 @@
+#chessboard {
+    background-color: rgba(133, 133, 139, 0.19);
+    width: 640px;
+    height: 470px;
+    padding: 15px;
+    border: 10px solid #333;
+}
+
+#box {
+    width: 48px;
+    height: 48px;
+    float: left;
+    font-size: 10px;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.black{
+    background-color:yellow;
+}
