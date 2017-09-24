@@ -24,7 +24,9 @@ public class App {
      * @param notifications notifications provided by client
      */
     public static void createApp(List<AppMap> maps, List<Notification> notifications) {
-        new App(maps, notifications);
+        if (App.getMaps().isEmpty() && App.getNotifications().isEmpty()) {
+            new App(maps, notifications);
+        }
     }
 
     public static List<Notification> getNotifications() {
