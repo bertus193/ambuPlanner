@@ -91,7 +91,6 @@ public class App {
         int endSize = startSize + 1;
         List<AbstractNode> nodes = App.copyValuesFromAppMap(App.getMaps().get(startSize));
         App.getMaps().add(new AppMap(nodes, endSize));
-        System.out.println("NEW MAP " + (App.getMaps().size() - 1) + " FROM MAP " + startSize);
         return App.getMaps().size() - 1;
     }
 

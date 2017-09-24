@@ -235,21 +235,21 @@ public class AppMap {
     /**
      * @return position of ambulance near
      */
-    public DestinationPlace getNearestAmbulance(int posx, int posy) {
-        DestinationPlace out = null;
+    public Ambulance getNearestAmbulance(int posx, int posy) {
+        Ambulance out = null;
         List<Node> routePath;
         int actualMax = App.getMaps().get(mapPosition).getNodes().size();
 
         Node patientNode = new Node(posx, posy, "P");
 
-        List<DestinationPlace> movements = new ArrayList<>();
+        List<Ambulance> movements = new ArrayList<>();
         for (Node ambulance : getAmbulances()) {
             routePath = findPath(ambulance.getCoordValue().getX(), ambulance.getCoordValue().getY(),
                     patientNode.getCoordValue().getX(), patientNode.getCoordValue().getY());
-            movements.add(new DestinationPlace(routePath, ambulance, patientNode));
+            movements.add(new Ambulance(routePath, ambulance, patientNode));
         }
 
-        for (DestinationPlace mov : movements) {
+        for (Ambulance mov : movements) {
             if (mov.getPathRoute().size() < actualMax) {
                 out = mov;
                 actualMax = mov.getPathRoute().size();
@@ -263,22 +263,22 @@ public class AppMap {
     /**
      * @return position of hospital near
      */
-    public DestinationPlace getNearestHospital(int posx, int posy) {
-        DestinationPlace out = null;
+    public Ambulance getNearestHospital(int posx, int posy) {
+        Ambulance out = null;
         List<Node> routePath;
         int actualMax = App.getMaps().get(mapPosition).getNodes().size();
 
         Node ambulanceNode = new Node(posx, posy, "P");
 
         List<Node> hospitals = this.getHospitals();
-        List<DestinationPlace> movements = new ArrayList<>();
+        List<Ambulance> movements = new ArrayList<>();
         for (Node hospital : hospitals) {
             routePath = findPath(ambulanceNode.getCoordValue().getX(), ambulanceNode.getCoordValue().getY(),
                     hospital.getCoordValue().getX(), hospital.getCoordValue().getY());
-            movements.add(new DestinationPlace(routePath, ambulanceNode, hospital));
+            movements.add(new Ambulance(routePath, ambulanceNode, hospital));
         }
 
-        for (DestinationPlace mov : movements) {
+        for (Ambulance mov : movements) {
             if (mov.getPathRoute().size() < actualMax) {
                 out = mov;
                 actualMax = mov.getPathRoute().size();

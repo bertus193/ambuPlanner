@@ -3,6 +3,7 @@ package com.example.ambuplanner.controllers;
 import com.example.ambuplanner.model.App;
 import com.example.ambuplanner.model.AppLaunch;
 import com.example.ambuplanner.model.Node;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,6 @@ public class AmbuPlannerController {
         App.initApp();
         AppLaunch initApp = new AppLaunch(); //TODO
         initApp.launch();
-        //SpringApplication.run(AmbuPlannerController.class, args);
+        SpringApplication.run(AmbuPlannerController.class, args);
     }
 }
