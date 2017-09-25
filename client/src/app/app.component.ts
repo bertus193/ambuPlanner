@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, RequestOptions, Headers } from '@angular/http';
 import { MyObj } from './interfaces';
 
 @Component({
@@ -20,11 +20,10 @@ export class AppComponent implements OnInit {
     constructor(private http: Http) { }
 
     ngOnInit() {
-        this.startClient();
     }
 
-    public startClient() {
-        this.http.get(this.dataUrl).subscribe(
+    public exampleClient() {
+        this.http.get(this.dataUrl + "/example/").subscribe(
             data => {
                 this.jsonMaps = data.json();
                 console.log(this.jsonMaps)
@@ -36,6 +35,43 @@ export class AppComponent implements OnInit {
                 console.log(error)
             }
         );
+    }
+
+    public createMap() {
+        var mapJSON = (<HTMLInputElement>document.getElementById('mapJSON')).value
+        var notificationsJSON = (<HTMLInputElement>document.getElementById('notificationsJSON')).value
+        if (this.IsJsonString(mapJSON) && this.IsJsonString(mapJSON)) {
+            /*let data = new URLSearchParams();
+            data.append('mapJSON', mapJSON);
+            data.append('notificationsJSON', notificationsJSON);*/
+            var re = /"/gi;
+            var mapJSON = mapJSON.replace(re, "\\\"");
+
+            let body = '{ "mapJSON": "' + mapJSON + '", "notificationsJSON": "' + notificationsJSON + '"}';
+
+            let headers = new Headers({ 'Content-Type': 'application/json' });
+            let options = new RequestOptions({ headers: headers });
+
+            this.http.post(this.dataUrl + '/generateMap', body, options)
+                .subscribe(data => {
+                    this.jsonMaps = data.json();
+                    this.width = this.calculateWidthSize() * 45 - 20
+                    this.height = (this.calculateHeightSize() * 45) - 20
+                }, error => {
+                    console.log(error.json());
+                });
+        } else {
+            console.log("error");
+        }
+    }
+
+    public IsJsonString(str) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
     }
 
     public isNumeric(n: any): n is number | string {

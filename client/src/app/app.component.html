@@ -2,24 +2,43 @@
       <div class="page-header">
             <h1>My Ambulance Planner</h1>
       </div>
-      <div *ngFor="let actualMap of jsonMaps">
-            <div id="chessboard" [style.width.px]="width" [style.height.px]="height">
-                  <div *ngFor="let actualNode of actualMap.nodes">
-                        <ng-container *ngIf="(actualNode.coordValue.value == 'B' || actualNode.coordValue.value == 'H')">
-                              <span id="box" style="background-color:#6B6B6B">{{actualNode.coordValue.value}}</span>
-                        </ng-container>
-                        <ng-container *ngIf="actualNode.coordValue.value == 'P'">
-                              <span id="box" style="background-color:#ECE93E">{{actualNode.coordValue.value}}</span>
-                        </ng-container>
-                        <ng-container *ngIf="isNumeric(actualNode.coordValue.value)">
-                              <span id="box" style="background-color:#E45F5F">{{actualNode.coordValue.value}}</span>
-                        </ng-container>
-                        <ng-container *ngIf="actualNode.coordValue.value == 'null'">
-                              <span id="box"></span>
-                        </ng-container>
+
+      <div id="newMapBox" *ngIf="jsonMaps == null; else existsMap">
+            <form class="form-horizontal">
+                  <div class="jumbotron">
+                        <h1>create a new Map</h1>
+                        <div class="form-group">
+                              <label for="inputEmail">map JSON</label>
+                              <input style=" width: 50%;" type="text" class="form-control" id="mapJSON" placeholder="Valid JSON Map">
+                              <br>
+                              <label for="inputEmail">notification JSON</label>
+                              <input style=" width: 50%;" type="text" class="form-control" id="notificationsJSON" placeholder="Valid JSON Notification">
+                        </div>
+                        <p><a class="btn btn-primary btn-lg" (click)="createMap()">Create</a></p>
                   </div>
-            </div>
-            <br><br><br>
+            </form>
       </div>
+      <ng-template #existsMap>
+            <div *ngFor="let actualMap of jsonMaps">
+                  <div id="chessboard" [style.width.px]="width" [style.height.px]="height">
+                        <div *ngFor="let actualNode of actualMap.nodes">
+                              <ng-container *ngIf="(actualNode.coordValue.value == 'B' || actualNode.coordValue.value == 'H')">
+                                    <span id="box" style="background-color:#6B6B6B">{{actualNode.coordValue.value}}</span>
+                              </ng-container>
+                              <ng-container *ngIf="actualNode.coordValue.value == 'P'">
+                                    <span id="box" style="background-color:#ECE93E">{{actualNode.coordValue.value}}</span>
+                              </ng-container>
+                              <ng-container *ngIf="isNumeric(actualNode.coordValue.value)">
+                                    <span id="box" style="background-color:#E45F5F">{{actualNode.coordValue.value}}</span>
+                              </ng-container>
+                              <ng-container *ngIf="actualNode.coordValue.value == 'null'">
+                                    <span id="box"></span>
+                              </ng-container>
+                        </div>
+                  </div>
+                  <br><br><br>
+            </div>
+      </ng-template>
+
 
 </div>

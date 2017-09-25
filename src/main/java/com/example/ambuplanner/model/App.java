@@ -65,15 +65,13 @@ public class App {
     }
 
 
-    public static void initApp() {
-        String mapJSON = "[[1, null, null, null, null, null, null, null, null, 4], [null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null], [null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null], [null, null, null, null, null, null, null, null, null, null], [null, \"B\", \"H\", 2, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null], [null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null, \"H\", \"B\", null], [null, null, null, null, null, null, null, 3, null, null], [null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"B\", null], [null, \"B\", \"B\", null, \"B\", \"B\", null, \"B\", \"H\", null, \"B\", \"B\", null],[5, null, null, null, null, null, null, 6, null, null]]";
-        String notificationsJSON = "[[1, 4, 4], [5, 1, 7], [20, 4, 9]]";
+    public static void initApp(MapRequest map) {
         JSONArray jsonPosition;
 
         List<AbstractNode> initNodes = new ArrayList<>();
         int x = 0;
         try {
-            JSONArray array = new JSONArray(mapJSON);
+            JSONArray array = new JSONArray(map.getMapJSON());
             int size = calculateSize(array);
             for (int countPosition = 0; countPosition < array.length(); countPosition++) {
                 jsonPosition = array.getJSONArray(countPosition);
@@ -93,7 +91,7 @@ public class App {
 
         List<Notification> initNotifications = new ArrayList<>();
         try {
-            JSONArray array = new JSONArray(notificationsJSON);
+            JSONArray array = new JSONArray(map.getNotificationsJSON());
             for (int countPosition = 0; countPosition < array.length(); countPosition++) {
                 jsonPosition = array.getJSONArray(countPosition);
                 Node node = new Node((Integer) jsonPosition.get(1), (Integer) jsonPosition.get(2), "P");

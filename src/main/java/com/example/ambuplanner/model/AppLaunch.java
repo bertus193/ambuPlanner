@@ -17,8 +17,8 @@ public class AppLaunch extends TimerTask {
 
     }
 
-    public void launch() {
-        App.initApp();
+    public void launch(MapRequest map) {
+        App.initApp(map);
         int turn = 0; // to infinite, wait totalNotifications
         boolean isEnd = false;
         int totalNotifications = 0; //count notification to finish turns
